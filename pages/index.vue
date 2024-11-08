@@ -89,10 +89,14 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.all-foods-container {
+    padding: 20px;
+}
 .food-card-container {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
 }
 .food-card {
     display: flex;
@@ -113,8 +117,5 @@ onMounted(async () => {
     width: 100px;
     object-fit: cover;
     /* border: 2px solid; */
-}
-.all-foods-container {
-    padding: 20px;
 }
 </style>
