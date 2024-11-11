@@ -5,6 +5,7 @@
             <NuxtLink class="nav-link" to="/">Home</NuxtLink>
             <NuxtLink class="nav-link" to="about">About</NuxtLink>
             <NuxtLink class="nav-link" to="add">Add</NuxtLink>
+            <NuxtLink class="nav-link" to="edit">Edit</NuxtLink>
         </div>
     </div>
 </template>
