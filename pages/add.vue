@@ -10,8 +10,8 @@
                 <option value="plant">Plant</option>
                 <option value="animal">Animal</option>
             </select>
-            <select v-model="foodProperty" name="property" id="property">
-                <option :value="null" disabled selected>Property</option>
+            <select v-model="foodTemperature" name="temperature" id="temperature">
+                <option :value="null" disabled selected>Temperature</option>
                 <option value="cold">Cold</option>
                 <option value="cool">Cool</option>
                 <option value="neutral">Neutral</option>
@@ -31,7 +31,7 @@ import axios from "axios"
 
 const foodName = ref(null)
 const foodType = ref(null)
-const foodProperty = ref(null)
+const foodTemperature = ref(null)
 
 const foodList = ref([])
 
@@ -40,22 +40,24 @@ const successMessage = ref('')
 
 async function addFruit() {
     console.log("adding " + foodName.value)
-    if (!foodName.value || !foodType.value || !foodProperty.value) {
+    if (!foodName.value || !foodType.value || !foodTemperature.value) {
         errorMessage.value = "Please fill in all fields"
     }
     try {
         const data = {
             name: foodName.value.toLowerCase(),
             type: foodType.value.toLowerCase(),
-            property: foodProperty.value.toLowerCase(),
+            temperature: foodTemperature.value.toLowerCase(),
         }
         console.log('req data:', data)
         const res = await axios.post('http://localhost:3000/add', data)
         console.log("post result:", res)
         successMessage.value = `Successfully Added`
+        errorMessage.value = ''
     } catch (error) {
         console.log('error making request:', error)
         errorMessage.value = error.response.data
+        successMessage.value = ''
     }
 }
 
@@ -65,7 +67,7 @@ async function addFruit() {
 <style scoped>
 
 form {
-    width: 200px;
+    width: 234px;
     margin: auto;
     margin-top: 2rem;
 }
