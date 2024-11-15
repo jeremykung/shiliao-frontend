@@ -9,7 +9,7 @@
     <input @input="filterFood()" v-model="searchQuery" class="search-bar" type="text" placeholder="Search">
 
     <div class="all-foods-container">
-        <div v-for="food in filteredFoods" class="food-card">
+        <div v-for="food in filteredFoods" class="food-card" @click="editFood(food)">
             <img :src="`/images/${food.name}.png`" alt="">
             <div class="food-card-text">
                 <h2>{{ food.name }}</h2>
@@ -19,6 +19,27 @@
     </div>
 
     <!-- Add Edit Module Overlay -->
+    <Modal v-if="foodToEdit">
+        <form @submit.prevent="onSubmit" class="edit-food-modal">
+            <h2>Edit Food</h2>
+            <img :src="`/images/${foodToEdit.name}.png`">
+            <input v-model="foodToEdit.name" type="text">
+            <div class="edit-food-selects">
+                <select v-model="foodToEdit.type" name="type" id="type">
+                    <option value="plant">Plant</option>
+                    <option value="animal">Animal</option>
+                </select>
+                <select v-model="foodToEdit.temperature" name="temperature" id="temperature">
+                    <option value="cold">Cold</option>
+                    <option value="cool">Cool</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="warm">Warm</option>
+                    <option value="hot">Hot</option>
+                </select>
+            </div>
+            <input @click="saveEdit()" type="submit" value="Save" class="button">
+        </form>
+    </Modal>
 
 </template>
 
@@ -28,6 +49,7 @@ import axios from 'axios'
 const allFoods = ref([])
 const searchQuery = ref('')
 const filteredFoods = ref(null)
+const foodToEdit = ref(null)
 
 function filterFood() {
     const re = new RegExp(searchQuery.value, "gi")
@@ -36,18 +58,25 @@ function filterFood() {
     filteredFoods.value = filtered
 }
 
-const errorMessage = ref('')
+function editFood(food) {
+    foodToEdit.value = food
+}
 
-function searchFood() {
-    const result = allFoods.value.find(food => food.name === searchTerm.value)
-    if (!result) {
-        errorMessage.value = "Food not found, check spelling!"
-        searchResult.value = null
-    } else {
-        searchResult.value = result
-        errorMessage.value = ''
+async function saveEdit() {
+    // create sql query
+    // make axios request
+    // success = close modal
+    // failure = output error message
+    console.log('saving edits:', foodToEdit.value)
+    try {
+        console.log('updating food to:', foodToEdit.value)
+        const result = await axios.patch(`http://localhost:3000/patch/${foodToEdit.value.id}`, foodToEdit.value)
+        console.log('update result:', result)
+        foodToEdit.value = null
+    } catch (error) {
+        console.log('error updating:', error)
     }
-    console.log(result)
+
 }
 
 onMounted(async () => {
@@ -97,5 +126,26 @@ onMounted(async () => {
     width: 100px;
     object-fit: cover;
     margin-right: 1rem;
+}
+.edit-food-modal {
+    text-align: center;
+}
+.edit-food-modal > img {
+    height: 120px;
+    display: block;
+    margin: auto;
+}
+.edit-food-modal > input {
+    display: block;
+    margin: auto;
+    margin-top: 12px;
+    width: 200px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
+.edit-food-selects {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
 }
 </style>
