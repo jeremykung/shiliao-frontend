@@ -1,26 +1,55 @@
 <template>
-    <div class="card-container">
-        <img src="/assets/images/banana.png" alt="banana">
-        <div class="text-container">
-            <h1>Food Name</h1>
-            <p>Type</p>
+    <div class="food-card" :class="determineBackground()">
+            <img :src="`/images/${food.name}.png`" alt="">
+            <div class="food-card-text">
+                <h2>{{ food.name }}</h2>
+                <p>{{ food.type }} / <span>{{ food.temperature }}</span></p>
+            </div>
         </div>
-    </div>
 </template>
 
 <script lang="ts" setup>
+const props = defineProps(['food', 'background'])
+
+function determineBackground() {
+    console.log('background:', props.background)
+    if (props.background === "temperature") {
+        return props.food.temperature
+    } else if (props.background === "transparent") {
+        return "transparent"
+    } else {
+        return null
+    }
+}
 
 </script>
 
 <style lang="css" scoped>
-.card-container {
+.food-card {
+    width: 300px;
+    height: 100px;
     display: flex;
-    width: auto;
+    padding: 8px;
+    margin-bottom: 1rem;
+    background-color: rgb(247, 244, 236);
+    border-radius: 8px;
+    cursor: pointer;
 }
-.text-container {
-    border: 1px solid;
+.food-card-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
-img {
-    width: 200px;
+.food-card img {
+    width: 100px;
+    object-fit: cover;
+    padding: 4px;
+    margin-right: 8px;
 }
+.cold { background-color: rgb(173, 179, 230); }
+.cool { background-color: rgb(169, 213, 228); }
+.neutral { background-color: rgb(187, 230, 173); }
+.warm { background-color: rgb(230, 216, 173); }
+.hot { background-color: rgb(230, 183, 173); }
+.transparent { background-color: rgba(255, 255, 255, 0.5); }
 </style>
