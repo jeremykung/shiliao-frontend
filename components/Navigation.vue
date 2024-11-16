@@ -1,6 +1,6 @@
 <template>
     <div class="nav-container">
-        <h1>Shiliao</h1>
+        <h1>食療 | Shi Liao</h1>
         <div>
             <NuxtLink class="nav-link" to="/">Home</NuxtLink>
             <NuxtLink class="nav-link" to="about">About</NuxtLink>
