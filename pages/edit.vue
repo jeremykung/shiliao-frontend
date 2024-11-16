@@ -9,13 +9,7 @@
     <input @input="filterFood()" v-model="searchQuery" class="search-bar" type="text" placeholder="Search">
 
     <div class="all-foods-container">
-        <div v-for="food in filteredFoods" class="food-card" @click="editFood(food)">
-            <img :src="`/images/${food.name}.png`" alt="">
-            <div class="food-card-text">
-                <h2>{{ food.name }}</h2>
-                <p>{{ food.type }} / <span>{{ food.temperature }}</span></p>
-            </div>
-        </div>
+        <FoodCard v-for="food in filteredFoods" :key="food.id" :food="food" background="temperature" @click="editFood(food)"></FoodCard>
     </div>
 
     <!-- Add Edit Module Overlay -->
@@ -63,10 +57,6 @@ function editFood(food) {
 }
 
 async function saveEdit() {
-    // create sql query
-    // make axios request
-    // success = close modal
-    // failure = output error message
     console.log('saving edits:', foodToEdit.value)
     try {
         console.log('updating food to:', foodToEdit.value)
@@ -106,26 +96,6 @@ onMounted(async () => {
     flex-wrap: wrap;
     display: flex;
     justify-content: space-around;
-}
-.food-card {
-    width: 300px;
-    height: 100px;
-    display: flex;
-    padding: 8px;
-    margin-bottom: 1rem;
-    background-color: rgb(247, 244, 236);
-    border-radius: 8px;
-    cursor: pointer;
-}
-.food-card-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.food-card img {
-    width: 100px;
-    object-fit: cover;
-    margin-right: 1rem;
 }
 .edit-food-modal {
     text-align: center;
