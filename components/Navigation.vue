@@ -15,16 +15,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(104, 178, 0);
+    background-color: var(--primary-color);
     padding: 20px;
 }
 .nav-container > h1 {
-    color: rgb(47, 80, 0);
+    color: var(--primary-color-darker);
 }
 .nav-link {
     padding: 16px;
     text-decoration: none;
-    background-color: rgb(71, 121, 0);
+    background-color: var(--primary-color-dark);
     font-weight: bold;
     color: white;
     border-radius: 4px;
