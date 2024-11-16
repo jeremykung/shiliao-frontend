@@ -2,11 +2,11 @@
     <Navigation />
 
     <form @submit.prevent="submit" class="search-bar">
-        <input v-model="searchTerm" type="text" name="search-term" placeholder="find food">
-        <input @click="searchFood" type="submit" class="button" value="Search">
+        <input @input="searchFood()" v-model="searchQuery" type="text" name="search-term" placeholder="Search">
+        <input @click="searchFood()" type="submit" class="button" value="Search">
     </form>
 
-    <div v-if="searchedFood" class="search-results-container">
+    <!-- <div v-if="searchedFood" class="search-results-container">
         
         <h1>Search Results</h1>
         <p v-if="searchError" class="error-message">{{ searchError }}</p>
@@ -17,7 +17,7 @@
                 <p>{{ searchedFood.type }} | <span>{{ searchedFood.temperature }}</span></p>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <form @submit.prevent="submit" class="filter-bar">
         <select v-model="filterType" name="type">
@@ -39,55 +39,39 @@
     </form>
 
     <div class="all-foods-container">
-        <h1>💙 Cold</h1>
-        <div class="food-card-container cold-foods">
-            <div v-for="food in coldFoods" class="food-card">
-                <img :src="`/images/${food.name}.png`" :alt="`/images/${food.name}.png`">
-                <div class="food-card-text">
-                    <h2>{{ food.name }}</h2>
-                    <p>{{ food.type }}</p>
-                </div>
+        <div class="cold-foods food-section">
+            <h1>Cold</h1>
+            <div class="food-card-container">
+                <FoodCard v-for="food in coldFoods" :key="food.id" :food="food" background="transparent" />
             </div>
         </div>
-        <h1>🩵 Cool</h1>
-        <div class="food-card-container cool-foods">
-            <div v-for="food in coolFoods" class="food-card">
-                <!-- <img src="../assets/images/banana.png" alt=""> -->
-                <img :src="`/images/${food.name}.png`" :alt="`/images/${food.name}.png`">
-                <div class="food-card-text">
-                    <h2>{{ food.name }}</h2>
-                    <p>{{ food.type }}</p>
-                </div>
+
+        <div class="cool-foods food-section">
+            <h1>Cool</h1>
+            <div class="food-card-container">
+                <FoodCard v-for="food in coolFoods" :key="food.id" :food="food" background="transparent" />
             </div>
         </div>
-        <h1>💚 Neutral</h1>
-        <div class="food-card-container neutral-foods">
-            <div v-for="food in neutralFoods" class="food-card">
-                <img :src="`/images/${food.name}.png`" :alt="`/images/${food.name}.png`">
-                <div class="food-card-text">
-                    <h2>{{ food.name }}</h2>
-                    <p>{{ food.type }}</p>
-                </div>
+
+        <div class="neutral-foods food-section">
+            <h1>Neutral</h1>
+            <div class="food-card-container">
+                <FoodCard v-for="food in neutralFoods" :key="food.id" :food="food" background="transparent" />
             </div>
         </div>
-        <h1>🧡 Warm</h1>
-        <div class="food-card-container warm-foods">
-            <div v-for="food in warmFoods" class="food-card">
-                <img :src="`/images/${food.name}.png`" :alt="`/images/${food.name}.png`">
-                <div class="food-card-text">
-                    <h2>{{ food.name }}</h2>
-                    <p>{{ food.type }}</p>
-                </div>
+
+        <div class="warm-foods food-section">
+            <h1>Warm</h1>
+            <div class="food-card-container">
+                <FoodCard v-for="food in warmFoods" :key="food.id" :food="food" background="transparent" />
+
             </div>
         </div>
-        <h1>❤️ Hot</h1>
-        <div class="food-card-container hot-foods">
-            <div v-for="food in hotFoods" class="food-card">
-                <img :src="`/images/${food.name}.png`" :alt="`/images/${food.name}.png`">
-                <div class="food-card-text">
-                    <h2>{{ food.name }}</h2>
-                    <p>{{ food.type }}</p>
-                </div>
+
+        <div class="hot-foods food-section">
+            <h1>Hot</h1>
+            <div class="food-card-container">
+                <FoodCard v-for="food in hotFoods" :key="food.id" :food="food" background="transparent" />
             </div>
         </div>
     </div>
@@ -100,7 +84,7 @@ import axios from 'axios'
 
 const allFoods = ref([])
 // Search Variables
-const searchTerm = ref("")
+const searchQuery = ref("")
 const searchedFood = ref(null)
 const searchError = ref(null)
 // Filter Variables
@@ -124,22 +108,28 @@ const hotFoods = computed(() => {
 })
 
 function searchFood() {
-    console.log('finding:', searchTerm.value.toLowerCase())
-    let foodFound = false
-    const searchResult = allFoods.value.forEach(item => {
-        if (item.name === searchTerm.value.trim().toLowerCase()) {
-            searchedFood.value = item
-            searchError.value = null
-            foodFound = true
-        }
-    })
-    console.log('foodFound after loop:', foodFound)
-    if (foodFound === false) {
-        searchedFood.value = "not found"
-        searchError.value = "Couldn't find it, check spelling!"
-    }
-
+    const re = new RegExp(searchQuery.value, "gi")
+    const filtered = [...allFoods.value].filter(food => re.test(food.name))
+    console.log('filtered foods:', filtered)
+    filteredFoods.value = filtered
 }
+
+// function searchFood() {
+//     console.log('finding:', searchTerm.value.toLowerCase())
+//     let foodFound = false
+//     const searchResult = allFoods.value.forEach(item => {
+//         if (item.name === searchTerm.value.trim().toLowerCase()) {
+//             searchedFood.value = item
+//             searchError.value = null
+//             foodFound = true
+//         }
+//     })
+//     console.log('foodFound after loop:', foodFound)
+//     if (foodFound === false) {
+//         searchedFood.value = "not found"
+//         searchError.value = "Couldn't find it, check spelling!"
+//     }
+// }
 
 function filterFoods() {
     const all = allFoods.value 
@@ -174,14 +164,17 @@ onMounted(async () => {
 .search-bar {
     padding: 20px;
 }
-.search-results-container {
+/* .search-results-container {
     padding: 20px;
-}
+} */
 .filter-bar {
     padding: 20px;
 }
 .all-foods-container {
-    padding: 20px;
+    margin: 20px;
+    border-radius: 1rem;
+    overflow: hidden;
+
 }
 .search-bar > input {
     margin-right: 8px;
@@ -194,33 +187,16 @@ onMounted(async () => {
 .neutral-foods { background-color: rgb(187, 230, 173); }
 .warm-foods { background-color: rgb(230, 216, 173); }
 .hot-foods { background-color: rgb(230, 183, 173); }
+.food-section {
+    padding: 1rem;
+}
+.food-section > h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
 .food-card-container {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-}
-.food-card {
-    display: flex;
-    width: 300px;
-    /* border: 2px solid; */
-}
-.food-card-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 20px;
-}
-.food-card-text > h2 {
-    font-size: 1.2rem;
-}
-.food-card-text > p > span {
-    font-style: italic;
-}
-.food-card > img {
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
-    /* border: 2px solid; */
+    justify-content: space-around;
 }
 </style>
