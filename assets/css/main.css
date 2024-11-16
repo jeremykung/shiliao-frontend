@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
+:root {
+    --main-bg-color: rgb(238, 226, 203);
+    /* Brown */
+    /* --primary-color: rgb(162, 127, 61);
+    --primary-color-dark: rgb(122, 85, 18);
+    --primary-color-darker: rgb(81, 55, 8); */
+    /* Green */
+    --primary-color: rgb(123, 180, 43);
+    --primary-color-dark: rgb(71, 121, 0);
+    --primary-color-darker: rgb(47, 80, 0);
+}
+
 * {
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
     color: rgb(63, 57, 45);
@@ -8,7 +20,7 @@
 }
 
 body {
-    background-color: rgb(238, 226, 203);
+    background-color: var(--main-bg-color);
 }
 
 input, select {
@@ -28,7 +40,7 @@ input, select {
 
 .button {
     padding: 10px 16px;
-    background-color: rgb(104, 178, 0);
+    background-color: var(--primary-color);
     border-radius: 4px;
     font-size: 16px;
     color: white;
