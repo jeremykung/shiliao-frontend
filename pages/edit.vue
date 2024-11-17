@@ -32,6 +32,7 @@
                 </select>
             </div>
             <input @click="saveEdit()" type="submit" value="Save" class="button">
+            <input @click="deleteFood()" type="submit" value="Delete" class="button-danger">
         </form>
     </Modal>
 
@@ -67,6 +68,20 @@ async function saveEdit() {
         console.log('error updating:', error)
     }
 
+}
+
+async function deleteFood() {
+    console.log('deleting:', foodToEdit.value.name)
+    try {
+        const foodId = foodToEdit.value.id
+        const result = await axios.delete(`http://localhost:3000/delete/${foodId}`, foodToEdit.value)
+        console.log('delete result:', result)
+        foodToEdit.value = null
+        allFoods.value = allFoods.value.filter(food => food.id !== foodId)
+        filteredFoods.value = null
+    } catch (error) {
+        console.log('error deleting:', error)
+    }
 }
 
 onMounted(async () => {
