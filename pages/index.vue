@@ -82,13 +82,16 @@
 <script lang="ts" setup>
 import axios from 'axios'
 
-const allFoods = ref([])
+// Pre Load Data
+const { data: fetchedAllFoods } = await useFetch('/api/get-all')
+
+const allFoods = ref(fetchedAllFoods.value)
 // Search Variables
 const searchQuery = ref("")
 const searchedFood = ref(null)
 const searchError = ref(null)
 // Filter Variables
-const filteredFoods = ref([])
+const filteredFoods = ref(allFoods.value)
 const filterType = ref(null)
 const filterTemperature = ref(null)
 const coldFoods = computed(() => {
@@ -150,10 +153,11 @@ function filterFoods() {
 
 onMounted(async () => {
     try {
-        const res = await axios.get('http://localhost:3000/all')
-        allFoods.value = res.data
-        filteredFoods.value = allFoods.value
-        console.log('all foods:', allFoods.value)
+        // console.log('getting data..')
+        // const res = await axios.get('http://localhost:3000/all')
+        // allFoods.value = data
+        // filteredFoods.value = allFoods.value
+        // console.log('all foods:', allFoods.value)
     } catch (error) {
         console.log("error getting foods:", error)
     }
