@@ -29,9 +29,9 @@
 <script lang="ts" setup>
 import axios from "axios"
 
-const foodName = ref(null)
-const foodType = ref(null)
-const foodTemperature = ref(null)
+const foodName: Ref<string> = ref('')
+const foodType: Ref<string> = ref('')
+const foodTemperature: Ref<string> = ref('')
 
 const foodList = ref([])
 
@@ -40,21 +40,33 @@ const successMessage = ref('')
 
 async function addFruit() {
     console.log("adding " + foodName.value)
-    if (!foodName.value || !foodType.value || !foodTemperature.value) {
+    if (!foodName.value.trim() || !foodType.value.trim() || !foodTemperature.value.trim()) {
         errorMessage.value = "Please fill in all fields"
     }
     try {
-        const data = {
+        const foodData = {
             name: foodName.value.toLowerCase(),
             type: foodType.value.toLowerCase(),
             temperature: foodTemperature.value.toLowerCase(),
         }
-        console.log('req data:', data)
-        const res = await axios.post('http://localhost:3000/add', data)
-        console.log("post result:", res)
-        successMessage.value = `Successfully Added`
-        errorMessage.value = ''
-    } catch (error) {
+        console.log('req data:', foodData)
+        // Supabase DB
+        const res = await $fetch('/api/insert-food', {
+            method: 'POST',
+            body: foodData,
+        })
+        console.log('useFetch res:', res)
+        if (res!.code === '23505') {
+            errorMessage.value = `${foodData.name} already added`
+            successMessage.value = ''
+        } else {
+            successMessage.value = `Successfully Added`
+            errorMessage.value = ''
+        }
+        // Local DB
+        // const res = await axios.post('http://localhost:3000/add', foodData)
+        // console.log("post result:", res)
+    } catch (error: any) {
         console.log('error making request:', error)
         errorMessage.value = error.response.data
         successMessage.value = ''
