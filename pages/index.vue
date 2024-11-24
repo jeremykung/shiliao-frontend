@@ -6,19 +6,6 @@
         <input @click="searchFood()" type="submit" class="button" value="Search">
     </form>
 
-    <!-- <div v-if="searchedFood" class="search-results-container">
-        
-        <h1>Search Results</h1>
-        <p v-if="searchError" class="error-message">{{ searchError }}</p>
-        <div v-if="searchedFood.id" class="food-card">
-            <img :src="`/images/${searchedFood.name}.png`" :alt="`/images/${searchedFood.name}.png`">
-            <div class="food-card-text">
-                <h2>{{ searchedFood.name }}</h2>
-                <p>{{ searchedFood.type }} | <span>{{ searchedFood.temperature }}</span></p>
-            </div>
-        </div>
-    </div> -->
-
     <form @submit.prevent="submit" class="filter-bar">
         <select v-model="filterType" name="type">
             <option :value="null" disabled selected>Type</option>
@@ -80,10 +67,16 @@
 </template>
 
 <script lang="ts" setup>
-import axios from 'axios'
 
 // Pre Load Data
 const { data: fetchedAllFoods } = await useFetch('/api/get-all')
+
+interface Food {
+  id: number;
+  name: string;
+  type: string;
+  temperature: string;
+}
 
 const allFoods = ref(fetchedAllFoods.value)
 // Search Variables
@@ -91,23 +84,23 @@ const searchQuery = ref("")
 const searchedFood = ref(null)
 const searchError = ref(null)
 // Filter Variables
-const filteredFoods = ref(allFoods.value)
+const filteredFoods: Ref<Food[]> = ref(allFoods.value)
 const filterType = ref(null)
 const filterTemperature = ref(null)
 const coldFoods = computed(() => {
-    return filteredFoods.value.filter(food => food.temperature === "cold")
+    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "cold")
 })
 const coolFoods = computed(() => {
-    return filteredFoods.value.filter(food => food.temperature === "cool")
+    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "cool")
 })
 const neutralFoods = computed(() => {
-    return filteredFoods.value.filter(food => food.temperature === "neutral")
+    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "neutral")
 })
 const warmFoods = computed(() => {
-    return filteredFoods.value.filter(food => food.temperature === "warm")
+    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "warm")
 })
 const hotFoods = computed(() => {
-    return filteredFoods.value.filter(food => food.temperature === "hot")
+    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "hot")
 })
 
 function searchFood() {
@@ -117,33 +110,16 @@ function searchFood() {
     filteredFoods.value = filtered
 }
 
-// function searchFood() {
-//     console.log('finding:', searchTerm.value.toLowerCase())
-//     let foodFound = false
-//     const searchResult = allFoods.value.forEach(item => {
-//         if (item.name === searchTerm.value.trim().toLowerCase()) {
-//             searchedFood.value = item
-//             searchError.value = null
-//             foodFound = true
-//         }
-//     })
-//     console.log('foodFound after loop:', foodFound)
-//     if (foodFound === false) {
-//         searchedFood.value = "not found"
-//         searchError.value = "Couldn't find it, check spelling!"
-//     }
-// }
-
 function filterFoods() {
     const all = allFoods.value 
     if (!filterTemperature.value && !filterType.value) {
         filteredFoods.value = all
     } else if (!filterTemperature.value) {
-        filteredFoods.value = all.filter(food => food.type === filterType.value)
+        filteredFoods.value = all!.filter(food => food.type === filterType.value)
     } else if (!filterType.value) {
-        filteredFoods.value = all.filter(food => food.temperature === filterTemperature.value)
+        filteredFoods.value = all!.filter(food => food.temperature === filterTemperature.value)
     } else {
-        filteredFoods.value = all.filter(food => {
+        filteredFoods.value = all!.filter(food => {
             if (food.temperature === filterTemperature.value && food.type === filterType.value) {
                 return food
             }
@@ -151,17 +127,6 @@ function filterFoods() {
     }
 }
 
-onMounted(async () => {
-    try {
-        // console.log('getting data..')
-        // const res = await axios.get('http://localhost:3000/all')
-        // allFoods.value = data
-        // filteredFoods.value = allFoods.value
-        // console.log('all foods:', allFoods.value)
-    } catch (error) {
-        console.log("error getting foods:", error)
-    }
-})
 </script>
 
 <style scoped>
