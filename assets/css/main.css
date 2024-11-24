@@ -2,6 +2,8 @@
 
 :root {
     --main-bg-color: rgb(238, 226, 203);
+    --error-color: rgb(207, 58, 58);
+    --success-color: rgb(71, 121, 0);
     /* Brown */
     /* --primary-color: rgb(162, 127, 61);
     --primary-color-dark: rgb(122, 85, 18);
@@ -31,11 +33,11 @@ input, select {
 }
 
 .error-message {
-    color: rgb(207, 58, 58);
+    color: var(--error-color);
 }
 
 .success-message {
-    color: rgb(71, 121, 0);
+    color: var(--success-color);
 }
 
 .button {
@@ -43,6 +45,20 @@ input, select {
     background-color: var(--primary-color);
     border-radius: 4px;
     font-size: 16px;
+    color: white;
+    border: none;
+}
+
+.button-dark {
+    padding: 10px 16px;
+    background-color: var(--primary-color-dark);
+    color: white;
+    border: none;
+}
+
+.button-danger {
+    padding: 10px 16px;
+    background-color: var(--error-color);
     color: white;
     border: none;
 }
