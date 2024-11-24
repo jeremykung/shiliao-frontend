@@ -9,7 +9,6 @@ export default defineEventHandler(async (event) => {
             console.log('supabase error:', error)
         }
         const allFoods = data
-        console.log('returning supabase data:', allFoods)
         return allFoods
     } catch (error) {
         console.log('error')
