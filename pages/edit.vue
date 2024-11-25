@@ -39,21 +39,30 @@
 </template>
 
 <script lang="ts" setup>
+const { data: fetchedAllFoods } = await useFetch('/api/get-all')
 import axios from 'axios'
 
-const allFoods = ref([])
+interface Food {
+    id: number,
+    name: string,
+    type: string,
+    temperature: string,
+}
+
+let allFoods = fetchedAllFoods.value
 const searchQuery = ref('')
-const filteredFoods = ref(null)
+const filteredFoods = ref(allFoods)
 const foodToEdit = ref(null)
 
 function filterFood() {
+    console.log('filtering from all foods:', allFoods)
     const re = new RegExp(searchQuery.value, "gi")
-    const filtered = [...allFoods.value].filter(food => re.test(food.name))
+    const filtered = [...allFoods!].filter(food => re.test(food.name))
     console.log('filtered foods:', filtered)
     filteredFoods.value = filtered
 }
 
-function editFood(food) {
+function editFood(food: Food) {
     foodToEdit.value = food
 }
 
@@ -61,7 +70,11 @@ async function saveEdit() {
     console.log('saving edits:', foodToEdit.value)
     try {
         console.log('updating food to:', foodToEdit.value)
-        const result = await axios.patch(`http://localhost:3000/patch/${foodToEdit.value.id}`, foodToEdit.value)
+        // const result = await axios.patch(`http://localhost:3000/patch/${foodToEdit.value.id}`, foodToEdit.value)
+        const result = await $fetch('/api/update-food', {
+            method: 'POST',
+            body: foodToEdit.value
+        })
         console.log('update result:', result)
         foodToEdit.value = null
     } catch (error) {
@@ -74,25 +87,29 @@ async function deleteFood() {
     console.log('deleting:', foodToEdit.value.name)
     try {
         const foodId = foodToEdit.value.id
-        const result = await axios.delete(`http://localhost:3000/delete/${foodId}`, foodToEdit.value)
+        const result = await $fetch('/api/delete-food', {
+            method: 'POST',
+            body: foodId,
+        })
+        // const result = await axios.delete(`http://localhost:3000/delete/${foodId}`, foodToEdit.value)
         console.log('delete result:', result)
         foodToEdit.value = null
-        allFoods.value = allFoods.value.filter(food => food.id !== foodId)
+        allFoods = allFoods.filter(food => food.id !== foodId)
         filteredFoods.value = null
     } catch (error) {
         console.log('error deleting:', error)
     }
 }
 
-onMounted(async () => {
-    try {
-        const result = await axios.get("http://localhost:3000/all")
-        allFoods.value = result.data
-        filteredFoods.value = result.data
-    } catch (error) {
-        console.log('error loading foods:', error)
-    }
-})
+// onMounted(async () => {
+//     try {
+//         const result = await axios.get("http://localhost:3000/all")
+//         allFoods.value = result.data
+//         filteredFoods.value = result.data
+//     } catch (error) {
+//         console.log('error loading foods:', error)
+//     }
+// })
 </script>
 
 <style scoped>
