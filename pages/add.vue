@@ -56,12 +56,18 @@ async function addFruit() {
             body: foodData,
         })
         console.log('useFetch res:', res)
-        if (res!.code === '23505') {
+        if (res.code === '23505') {
+            console.log('fetch error')
             errorMessage.value = `${foodData.name} already added`
             successMessage.value = ''
-        } else {
+        } else if (res.status = 201) {
+            console.log('add success')
             successMessage.value = `Successfully Added`
             errorMessage.value = ''
+        } else {
+            console.log("something went wrong")
+            successMessage.value = ``
+            errorMessage.value = 'Something went wrong'
         }
         // Local DB
         // const res = await axios.post('http://localhost:3000/add', foodData)
