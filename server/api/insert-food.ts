@@ -14,14 +14,7 @@ export default defineEventHandler(async (event) => {
             console.log('supabase error:', error)
             return error
         }
-        return data
-        // const { data, error } = await supabase.from('food').select()
-        // if (error) {
-        //     console.log('supabase error:', error)
-        // }
-        // const allFoods = data
-        // console.log('returning supabase data:', allFoods)
-        // return allFoods
+        return { status: 201, statusText: "Created" }
     } catch (error) {
         console.log('error')
     }
