@@ -140,12 +140,12 @@ function filterFoods() {
     justify-content: space-between;
 }
 .search-bar {
-    margin: 20px;
+    margin: 1rem 20px;
     display: flex;
     justify-content: center;
 }
 .filter-bar {
-    margin: 20px;
+    margin: 1rem 20px;
     display: flex;
     justify-content: center;
 }
@@ -177,5 +177,21 @@ function filterFoods() {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+}
+
+@media only screen and (max-width: 700px) {
+  .search-filter-container {
+    flex-direction: column;
+  }
+  .search-bar {
+    margin: 1rem;
+  }
+  #search-input {
+    width: 202px;
+  }
+  .filter-bar {
+    margin: 0;
+    margin-bottom: 1rem;
+  }
 }
 </style>
