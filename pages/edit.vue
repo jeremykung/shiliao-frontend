@@ -40,7 +40,6 @@
 
 <script lang="ts" setup>
 const { data: fetchedAllFoods } = await useFetch('/api/get-all')
-import axios from 'axios'
 
 interface Food {
     id: number,
@@ -70,7 +69,6 @@ async function saveEdit() {
     console.log('saving edits:', foodToEdit.value)
     try {
         console.log('updating food to:', foodToEdit.value)
-        // const result = await axios.patch(`http://localhost:3000/patch/${foodToEdit.value.id}`, foodToEdit.value)
         const result = await $fetch('/api/update-food', {
             method: 'POST',
             body: foodToEdit.value
@@ -91,7 +89,6 @@ async function deleteFood() {
             method: 'POST',
             body: foodId,
         })
-        // const result = await axios.delete(`http://localhost:3000/delete/${foodId}`, foodToEdit.value)
         console.log('delete result:', result)
         foodToEdit.value = null
         allFoods = allFoods.filter(food => food.id !== foodId)
@@ -100,16 +97,6 @@ async function deleteFood() {
         console.log('error deleting:', error)
     }
 }
-
-// onMounted(async () => {
-//     try {
-//         const result = await axios.get("http://localhost:3000/all")
-//         allFoods.value = result.data
-//         filteredFoods.value = result.data
-//     } catch (error) {
-//         console.log('error loading foods:', error)
-//     }
-// })
 </script>
 
 <style scoped>

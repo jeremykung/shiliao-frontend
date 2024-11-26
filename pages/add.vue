@@ -50,7 +50,6 @@ async function addFruit() {
             temperature: foodTemperature.value.toLowerCase(),
         }
         console.log('req data:', foodData)
-        // Supabase DB
         const res = await $fetch('/api/insert-food', {
             method: 'POST',
             body: foodData,
@@ -69,9 +68,6 @@ async function addFruit() {
             successMessage.value = ``
             errorMessage.value = 'Something went wrong'
         }
-        // Local DB
-        // const res = await axios.post('http://localhost:3000/add', foodData)
-        // console.log("post result:", res)
     } catch (error: any) {
         console.log('error making request:', error)
         errorMessage.value = error.response.data
