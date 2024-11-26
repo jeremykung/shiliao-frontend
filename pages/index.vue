@@ -1,29 +1,33 @@
 <template>
     <Navigation />
 
-    <form @submit.prevent="submit" class="search-bar">
-        <input @input="searchFood()" v-model="searchQuery" type="text" name="search-term" placeholder="Search">
-        <input @click="searchFood()" type="submit" class="button" value="Search">
-    </form>
+    <div class="search-filter-container">
 
-    <form @submit.prevent="submit" class="filter-bar">
-        <select v-model="filterType" name="type">
-            <option :value="null" disabled selected>Type</option>
-            <option :value="null">All</option>
-            <option value="plant">Plant</option>
-            <option value="animal">Animal</option>
-        </select>
-        <select v-model="filterTemperature" name="temperature">Temperature
-            <option :value="null" disabled selected>Temperature</option>
-            <option :value="null">All</option>
-            <option value="cold">Cold</option>
-            <option value="cool">Cool</option>
-            <option value="neutral">Neutral</option>
-            <option value="warm">Warm</option>
-            <option value="hot">Hot</option>
-        </select>
-        <input @click="filterFoods()" type="submit" class="button" value="Filter">
-    </form>
+        <form @submit.prevent="submit" class="search-bar">
+            <input @input="searchFood()" v-model="searchQuery" id="search-input" type="text" name="search-term" placeholder="Search">
+            <input @click="searchFood()" type="submit" class="button" value="Search">
+        </form>
+    
+        <form @submit.prevent="submit" class="filter-bar">
+            <select v-model="filterType" name="type">
+                <option :value="null" disabled selected>Type</option>
+                <option :value="null">All</option>
+                <option value="plant">Plant</option>
+                <option value="animal">Animal</option>
+            </select>
+            <select v-model="filterTemperature" name="temperature">Temperature
+                <option :value="null" disabled selected>Temperature</option>
+                <option :value="null">All</option>
+                <option value="cold">Cold</option>
+                <option value="cool">Cool</option>
+                <option value="neutral">Neutral</option>
+                <option value="warm">Warm</option>
+                <option value="hot">Hot</option>
+            </select>
+            <input @click="filterFoods()" type="submit" class="button" value="Filter">
+        </form>
+
+    </div>
 
     <div class="all-foods-container">
         <div class="cold-foods food-section">
@@ -130,14 +134,20 @@ function filterFoods() {
 </script>
 
 <style scoped>
-.search-bar {
-    padding: 20px;
+.search-filter-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
 }
-/* .search-results-container {
-    padding: 20px;
-} */
+.search-bar {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}
 .filter-bar {
-    padding: 20px;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
 }
 .all-foods-container {
     margin: 20px;
@@ -145,7 +155,7 @@ function filterFoods() {
     overflow: hidden;
 
 }
-.search-bar > input {
+#search-input {
     margin-right: 8px;
 }
 .filter-bar > select {
