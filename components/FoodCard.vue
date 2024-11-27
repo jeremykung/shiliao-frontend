@@ -3,6 +3,7 @@
             <img :src="`/images/${food.name}.png`" alt="">
             <div class="food-card-text">
                 <h2>{{ food.name }}</h2>
+                <h3>{{ food.chinese }}</h3>
                 <p>{{ food.type }} / <span>{{ food.temperature }}</span></p>
             </div>
         </div>
@@ -26,8 +27,8 @@ function determineBackground() {
 
 <style lang="css" scoped>
 .food-card {
-    width: 300px;
-    height: 100px;
+    width: 320px;
+    height: 120px;
     display: flex;
     padding: 8px;
     margin-bottom: 1rem;

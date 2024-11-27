@@ -18,6 +18,7 @@
             <h2>Edit Food</h2>
             <img :src="`/images/${foodToEdit.name}.png`">
             <input v-model="foodToEdit.name" type="text">
+            <input v-model="foodToEdit.chinese" type="text">
             <div class="edit-food-selects">
                 <select v-model="foodToEdit.type" name="type" id="type">
                     <option value="plant">Plant</option>
@@ -46,6 +47,7 @@ interface Food {
     name: string,
     type: string,
     temperature: string,
+    chinese: string,
 }
 
 let allFoods = fetchedAllFoods.value
