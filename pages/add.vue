@@ -1,7 +1,7 @@
 <template>
     <Navigation />
 
-    <form @submit.prevent="onSubmit">
+    <form @submit.prevent="submit">
         <h1>Add Food</h1>
         <input v-model="foodName" type="text" id="name" name="name" placeholder="Name">
         <div class="food-select-inputs">
@@ -19,7 +19,7 @@
                 <option value="hot">Hot</option>
             </select>
         </div>
-        <input type="submit" value="Add" @click="addFruit()" class="button">
+        <input type="submit" value="Add" @click="addFood()" class="button">
         <p class="error-message">{{ errorMessage }}</p>
         <p class="success-message">{{ successMessage }}</p>
     </form>
@@ -28,6 +28,10 @@
 
 <script lang="ts" setup>
 import axios from "axios"
+import { createClient } from "@supabase/supabase-js";
+
+const config = useRuntimeConfig()
+const supabase = createClient(config.public.SUPABASE_URL, config.public.SUPABASE_KEY)
 
 const foodName: Ref<string> = ref('')
 const foodType: Ref<string> = ref('')
@@ -38,7 +42,7 @@ const foodList = ref([])
 const errorMessage = ref('')
 const successMessage = ref('')
 
-async function addFruit() {
+async function addFood() {
     console.log("adding " + foodName.value)
     if (!foodName.value.trim() || !foodType.value.trim() || !foodTemperature.value.trim()) {
         errorMessage.value = "Please fill in all fields"
@@ -50,11 +54,22 @@ async function addFruit() {
             temperature: foodTemperature.value.toLowerCase(),
         }
         console.log('req data:', foodData)
-        const res = await $fetch('/api/insert-food', {
-            method: 'POST',
-            body: foodData,
-        })
+        // const res: any = await $fetch('/api/insert-food', {
+        //     method: 'POST',
+        //     body: foodData,
+        //     headers: {
+        //     'Content-Type': 'application/json',
+        //     Authorization: `Bearer ${session.access_token}`,
+        //     },
+        // })
+        console.log('MAKING REQUEST')
+        const { data: res, error } = await supabase
+            .from('food')
+            .insert(foodData)
         console.log('useFetch res:', res)
+        if (error) {
+            console.log('error making supabase request:', error)
+        }
         if (res.code === '23505') {
             console.log('fetch error')
             errorMessage.value = `${foodData.name} already added`
