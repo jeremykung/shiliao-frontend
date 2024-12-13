@@ -161,7 +161,7 @@ function filterFoods() {
 .filter-bar > select {
     margin-right: 8px;
 }
-.cold-foods { background-color: rgb(173, 179, 230); }
+.cold-foods { background-color: rgb(173, 195, 230); }
 .cool-foods { background-color: lightblue; }
 .neutral-foods { background-color: rgb(187, 230, 173); }
 .warm-foods { background-color: rgb(230, 216, 173); }
