@@ -190,7 +190,7 @@ function searchFood() {
 }
 .all-foods-container {
     margin: 20px;
-    border-radius: 1rem;
+    border-radius: 4px;
     overflow: hidden;
 }
 #search-input {

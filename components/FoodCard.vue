@@ -27,13 +27,13 @@ function determineBackground() {
 
 <style lang="css" scoped>
 .food-card {
-    width: 320px;
+    width: 340px;
     height: 120px;
     display: flex;
     padding: 8px;
     margin-bottom: 1rem;
     background-color: rgb(247, 244, 236);
-    border-radius: 8px;
+    border-radius: 4px;
     cursor: pointer;
 }
 .food-card-text {
@@ -43,7 +43,7 @@ function determineBackground() {
 }
 .food-card img {
     width: 100px;
-    object-fit: cover;
+    object-fit: contain;
     padding: 4px;
     margin-right: 8px;
 }
