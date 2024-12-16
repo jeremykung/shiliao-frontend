@@ -4,18 +4,18 @@
     <div class="search-filter-container">
 
         <form @submit.prevent="submit" class="search-bar">
-            <input @input="searchFood()" v-model="searchQuery" id="search-input" type="text" name="search-term" placeholder="Search">
-            <input @click="searchFood()" type="submit" class="button" value="Search">
+            <input @input="searchFood()" v-model="searchQuery" id="search-input" type="text" name="search-term" placeholder="Type to search...">
+            <!-- <input @click="searchFood()" type="submit" class="button" value="Search"> -->
         </form>
     
         <form @submit.prevent="submit" class="filter-bar">
-            <select v-model="filterType" name="type">
+            <select v-model="filterType" id="filter-type" name="type">
                 <option :value="null" disabled selected>Type</option>
                 <option :value="null">All</option>
                 <option value="plant">Plant</option>
                 <option value="animal">Animal</option>
             </select>
-            <select v-model="filterTemperature" name="temperature">Temperature
+            <select v-model="filterTemperature" id="filter-temperature" name="temperature">Temperature
                 <option :value="null" disabled selected>Temperature</option>
                 <option :value="null">All</option>
                 <option value="cold">Cold</option>
@@ -24,7 +24,7 @@
                 <option value="warm">Warm</option>
                 <option value="hot">Hot</option>
             </select>
-            <input @click="filterFoods()" type="submit" class="button" value="Filter">
+            <!-- <input @click="filterFoods()" type="submit" class="button" value="Filter"> -->
         </form>
 
     </div>
@@ -82,53 +82,91 @@ interface Food {
   temperature: string;
 }
 
-const allFoods = ref(fetchedAllFoods.value)
+const allFoods = fetchedAllFoods.value
 // Search Variables
 const searchQuery = ref("")
 const searchedFood = ref(null)
 const searchError = ref(null)
 // Filter Variables
-const filteredFoods: Ref<Food[]> = ref(allFoods.value)
+const filteredFoods = ref(allFoods)
 const filterType = ref(null)
 const filterTemperature = ref(null)
 const coldFoods = computed(() => {
-    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "cold")
+    const allColdFoods = filteredFoods.value?.filter(food => food.temperature === 'cold')
+    return allColdFoods?.filter((food: { name: string, type: string, temperature: string }) => {
+        if (filterTemperature.value && filterType.value) {
+            return food.temperature === filterTemperature.value && food.type === filterType.value
+        } else if (filterTemperature.value) {
+            return food.temperature === filterTemperature.value
+        } else if (filterType.value) {
+            return food.type === filterType.value
+        } else {
+            return allColdFoods
+        }
+    })
 })
 const coolFoods = computed(() => {
-    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "cool")
+    const allCoolFoods = filteredFoods.value?.filter(food => food.temperature === 'cool')
+    return allCoolFoods?.filter((food: { name: string, type: string, temperature: string }) => {
+        if (filterTemperature.value && filterType.value) {
+            return food.temperature === filterTemperature.value && food.type === filterType.value
+        } else if (filterTemperature.value) {
+            return food.temperature === filterTemperature.value
+        } else if (filterType.value) {
+            return food.type === filterType.value
+        } else {
+            return allCoolFoods
+        }
+    })
 })
 const neutralFoods = computed(() => {
-    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "neutral")
+    const allNeutralFoods = filteredFoods.value?.filter(food => food.temperature === 'neutral')
+    return allNeutralFoods?.filter((food: { name: string, type: string, temperature: string }) => {
+        if (filterTemperature.value && filterType.value) {
+            return food.temperature === filterTemperature.value && food.type === filterType.value
+        } else if (filterTemperature.value) {
+            return food.temperature === filterTemperature.value
+        } else if (filterType.value) {
+            return food.type === filterType.value
+        } else {
+            return allNeutralFoods
+        }
+    })
 })
 const warmFoods = computed(() => {
-    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "warm")
+    const allWarmFoods = filteredFoods.value?.filter(food => food.temperature === 'warm')
+    return allWarmFoods?.filter((food: { name: string, type: string, temperature: string }) => {
+        if (filterTemperature.value && filterType.value) {
+            return food.temperature === filterTemperature.value && food.type === filterType.value
+        } else if (filterTemperature.value) {
+            return food.temperature === filterTemperature.value
+        } else if (filterType.value) {
+            return food.type === filterType.value
+        } else {
+            return allWarmFoods
+        }
+    })
 })
 const hotFoods = computed(() => {
-    return filteredFoods.value.filter((food: { name: string, type: string, temperature: string }) => food.temperature === "hot")
+    const allHotFoods = filteredFoods.value?.filter(food => food.temperature === 'hot')
+    return allHotFoods?.filter((food: { name: string, type: string, temperature: string }) => {
+        if (filterTemperature.value && filterType.value) {
+            return food.temperature === filterTemperature.value && food.type === filterType.value
+        } else if (filterTemperature.value) {
+            return food.temperature === filterTemperature.value
+        } else if (filterType.value) {
+            return food.type === filterType.value
+        } else {
+            return allHotFoods
+        }
+    })
 })
 
 function searchFood() {
     const re = new RegExp(searchQuery.value, "gi")
-    const filtered = [...allFoods.value].filter(food => re.test(food.name))
+    const filtered = [...allFoods].filter(food => re.test(food.name))
     console.log('filtered foods:', filtered)
     filteredFoods.value = filtered
-}
-
-function filterFoods() {
-    const all = allFoods.value 
-    if (!filterTemperature.value && !filterType.value) {
-        filteredFoods.value = all
-    } else if (!filterTemperature.value) {
-        filteredFoods.value = all!.filter(food => food.type === filterType.value)
-    } else if (!filterType.value) {
-        filteredFoods.value = all!.filter(food => food.temperature === filterTemperature.value)
-    } else {
-        filteredFoods.value = all!.filter(food => {
-            if (food.temperature === filterTemperature.value && food.type === filterType.value) {
-                return food
-            }
-        })
-    }
 }
 
 </script>
@@ -141,6 +179,7 @@ function filterFoods() {
 }
 .search-bar {
     margin: 1rem 20px;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
@@ -153,12 +192,12 @@ function filterFoods() {
     margin: 20px;
     border-radius: 1rem;
     overflow: hidden;
-
 }
 #search-input {
-    margin-right: 8px;
+    width: 100%;
+    /* margin-right: 8px; */
 }
-.filter-bar > select {
+#filter-type {
     margin-right: 8px;
 }
 .cold-foods { background-color: rgb(173, 195, 230); }
@@ -185,13 +224,21 @@ function filterFoods() {
   }
   .search-bar {
     margin: 1rem;
+    width: auto;
   }
   #search-input {
-    width: 202px;
+    /* width: 100%; */
+    text-align: center;
   }
   .filter-bar {
-    margin: 0;
+    margin: 0 1rem;
     margin-bottom: 1rem;
+  }
+  #filter-type {
+    width: 40%;
+  }
+  #filter-temperature {
+    width: 60%;
   }
 }
 </style>
