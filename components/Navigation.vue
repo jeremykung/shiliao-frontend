@@ -1,6 +1,9 @@
 <template>
     <div class="nav-container">
-        <h1>食療 | Shi Liao</h1>
+        <div class="title">
+            <h1>食療 ShíLiáo</h1>
+            <p>Chinese Food Therapy</p>
+        </div>
         <div>
             <NuxtLink class="nav-link" to="/">Home</NuxtLink>
             <!-- <NuxtLink class="nav-link" to="add">Add</NuxtLink> -->
@@ -39,5 +42,14 @@
     /* color: white; */
     border-radius: 4px;
     margin-left: 10px;
+}
+
+@media only screen and (max-width: 700px) {
+    .title > h1 {
+        font-size: 1.6rem;
+    }
+    .title > p {
+        font-size: 0.9rem;
+    }
 }
 </style>
