@@ -163,7 +163,11 @@ const hotFoods = computed(() => {
 })
 
 function searchFood() {
-    const re = new RegExp(searchQuery.value, "gi")
+    let searchTerm = searchQuery.value.trim()
+    if (searchTerm[searchTerm.length - 1] === "s") {
+        searchTerm = searchTerm.substring(0, searchTerm.length - 1)
+    }
+    const re = new RegExp(searchTerm, "gi")
     const filtered = [...allFoods].filter(food => re.test(food.name))
     console.log('filtered foods:', filtered)
     filteredFoods.value = filtered
