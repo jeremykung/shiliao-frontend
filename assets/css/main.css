@@ -29,11 +29,20 @@ body {
     background-color: var(--main-bg-color);
 }
 
-input, select {
+input, select, textarea {
     padding: 10px;
     font-size: 16px;
     border: 1px solid white;
     border-radius: 4px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+}
+
+.italic {
+    font-style: italic
 }
 
 .error-message {
