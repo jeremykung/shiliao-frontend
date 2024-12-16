@@ -1,9 +1,9 @@
 <template>
     <div class="nav-container">
-        <div class="title">
+        <NuxtLink class="title" to="/">
             <h1>食療 ShíLiáo</h1>
             <p>Chinese Food Therapy</p>
-        </div>
+        </NuxtLink>
         <div>
             <NuxtLink class="nav-link" to="/">Home</NuxtLink>
             <!-- <NuxtLink class="nav-link" to="add">Add</NuxtLink> -->
