@@ -12,6 +12,10 @@
     --primary-color: rgb(123, 180, 43);
     --primary-color-dark: rgb(71, 121, 0);
     --primary-color-darker: rgb(47, 80, 0);
+    --secondary-color-light: rgb(132, 215, 228);
+    --secondary-color: rgb(0, 145, 168);
+    --secondary-color-dark: rgb(0, 88, 101);
+    --secondary-color-darker: rgb(0, 50, 57);
 }
 
 * {
@@ -26,7 +30,7 @@ body {
 }
 
 input, select {
-    padding: 8px;
+    padding: 10px;
     font-size: 16px;
     border: 1px solid white;
     border-radius: 4px;
