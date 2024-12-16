@@ -43,7 +43,6 @@
     border-radius: 4px;
     margin-left: 10px;
 }
-
 @media only screen and (max-width: 700px) {
     .title > h1 {
         font-size: 1.6rem;
