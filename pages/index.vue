@@ -5,7 +5,7 @@
 
         <form @submit.prevent="submit" class="search-bar">
             <input @input="searchFood()" v-model="searchQuery" id="search-input" type="text" name="search-term" placeholder="Type to search...">
-            <!-- <input @click="searchFood()" type="submit" class="button" value="Search"> -->
+            <input @click="searchFood()" type="submit" id="search-food-btn" class="button" value="Search">
         </form>
     
         <form @submit.prevent="submit" class="filter-bar">
@@ -200,6 +200,9 @@ function searchFood() {
 #search-input {
     width: 100%;
     /* margin-right: 8px; */
+}
+#search-food-btn {
+    display: none;
 }
 #filter-type {
     margin-right: 8px;

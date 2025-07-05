@@ -3,26 +3,21 @@ const config = useRuntimeConfig()
 const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_KEY)
 
 export default defineEventHandler(async (event) => {
-    const { data: session, error } = await supabase.auth.getSession();
-
-    if (session) {
-    console.log('Access Token:', session);
-    } else {
-    console.error('Authentication issue:', error);
-    }
     try {
         const body = await readBody(event)
         console.log('request body:', body)
-        const { data, error } = await supabase
-            .from('food')
-            .insert(body)
+        const { data, error } = await supabase.auth.signUp({
+            email: body.email,
+            password: body.password,
+        })
         console.log('supabase result data:', data)
         if (error) {
             console.log('supabase error:', error)
-            return error
+            return { data: error }
         }
-        return { status: 201, statusText: "Created" }
+        return { status: 201, statusText: "User Created", data: data }
     } catch (error) {
         console.log('error')
     }
 })
+

@@ -45,14 +45,14 @@ const successMessage = ref('')
 
 async function addFood() {
 
-    // Retrieve user's session token (assuming the user is logged in)
-    const { data: session } = await supabase.auth.getSession();
-    if (!session.session) {
-    console.error('User session is missing. Ensure the user is logged in.');
-    return;
-    } else {
-        console.log('user is authorized with session:', session)
-    }
+    // // Retrieve user's session token (assuming the user is logged in)
+    // const { data: session } = await supabase.auth.getSession();
+    // if (!session.session) {
+    // console.error('User session is missing. Ensure the user is logged in.');
+    // return;
+    // } else {
+    //     console.log('user is authorized with session:', session)
+    // }
 
     // Validate data
     if (!foodName.value.trim() || !foodType.value.trim() || !foodTemperature.value.trim()) {
